@@ -11,13 +11,11 @@ return {
   },
   lazy = false,
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { 'g/', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
     sources = {
       'filesystem',
-      'buffers',
-      'git_status',
       'document_symbols',
     },
     source_selector = {
@@ -26,15 +24,13 @@ return {
       content_layout = 'center',
       sources = {
         { source = 'filesystem' },
-        { source = 'buffers' },
-        { source = 'git_status' },
         { source = 'document_symbols' },
       },
     },
     filesystem = {
       window = {
         mappings = {
-          ['\\'] = 'close_window',
+          ['g/'] = 'close_window',
         },
       },
     },
