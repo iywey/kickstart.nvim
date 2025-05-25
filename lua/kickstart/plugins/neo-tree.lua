@@ -14,6 +14,23 @@ return {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
+    sources = {
+      'filesystem',
+      'buffers',
+      'git_status',
+      'document_symbols',
+    },
+    source_selector = {
+      -- Enable the selector in the winbar (or statusline)
+      winbar = true,
+      content_layout = 'center',
+      sources = {
+        { source = 'filesystem' },
+        { source = 'buffers' },
+        { source = 'git_status' },
+        { source = 'document_symbols' },
+      },
+    },
     filesystem = {
       window = {
         mappings = {
