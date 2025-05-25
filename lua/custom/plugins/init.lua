@@ -10,10 +10,10 @@ return {
       harpoon:setup()
       -- REQUIRED
 
-      vim.keymap.set('n', '<leader>a', function()
+      vim.keymap.set('n', '<leader>o', function()
         harpoon:list():add()
       end, { desc = 'Harpoon add' })
-      vim.keymap.set('n', '<leader>q', function()
+      vim.keymap.set('n', '<leader>p', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = 'Harpoon quick menu' })
 

@@ -20,7 +20,7 @@ return {
     },
     source_selector = {
       -- Enable the selector in the winbar (or statusline)
-      winbar = true,
+      -- winbar = true,
       content_layout = 'center',
       sources = {
         { source = 'filesystem' },
