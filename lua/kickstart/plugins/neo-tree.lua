@@ -11,7 +11,7 @@ return {
   },
   lazy = false,
   keys = {
-    { 'g/', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '<C-/>', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
     sources = {
@@ -30,7 +30,7 @@ return {
     filesystem = {
       window = {
         mappings = {
-          ['g/'] = 'close_window',
+          ['<C-/>'] = 'close_window',
         },
       },
     },

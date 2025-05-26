@@ -10,25 +10,25 @@ return {
       harpoon:setup()
       -- REQUIRED
 
-      vim.keymap.set('n', '<leader>o', function()
+      vim.keymap.set('n', '<leader>ha', function()
         harpoon:list():add()
-      end, { desc = 'Harpoon add' })
-      vim.keymap.set('n', '<leader>p', function()
+      end, { desc = '[H]arpoon add' })
+      vim.keymap.set('n', '<leader>hq', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, { desc = 'Harpoon quick menu' })
+      end, { desc = 'Harpoon [Q]uick menu' })
 
-      vim.keymap.set('n', '<leader>j', function()
+      vim.keymap.set('n', 'gj', function()
         harpoon:list():select(1)
       end, { desc = 'Harpoon 1' })
-      vim.keymap.set('n', '<leader>k', function()
+      vim.keymap.set('n', 'gk', function()
         harpoon:list():select(2)
       end, { desc = 'Harpoon 2' })
-      vim.keymap.set('n', '<leader>l', function()
+      vim.keymap.set('n', 'gl', function()
         harpoon:list():select(3)
       end, { desc = 'Harpoon 3' })
-      vim.keymap.set('n', '<leader>;', function()
+      vim.keymap.set('n', 'g;', function()
         harpoon:list():select(4)
-      end, { desc = 'Harpoon 1' })
+      end, { desc = 'Harpoon 4' })
       --
       -- -- Toggle previous & next buffers stored within Harpoon list
       -- vim.keymap.set('n', '<C-S-P>', function()
@@ -60,5 +60,20 @@ return {
   },
   {
     'tpope/vim-fugitive',
+  },
+  {
+    'echasnovski/mini.bufremove',
+    version = false,
+
+    vim.api.nvim_create_user_command('BD', function(opts)
+      local force = opts.bang or false
+      require('mini.bufremove').delete(0, force)
+    end, {
+      bang = true,
+      desc = 'Buffer delete via mini.bufremove (preserve windows)',
+    }),
+    vim.cmd [[
+  cabbrev bd BD
+]],
   },
 }
