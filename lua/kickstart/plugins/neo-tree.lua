@@ -16,7 +16,8 @@ return {
   opts = {
     sources = {
       'filesystem',
-      'document_symbols',
+      'buffers',
+      'git_status',
     },
     source_selector = {
       -- Enable the selector in the winbar (or statusline)
@@ -24,7 +25,8 @@ return {
       content_layout = 'center',
       sources = {
         { source = 'filesystem' },
-        { source = 'document_symbols' },
+        { source = 'buffers' },
+        { source = 'git_status' },
       },
     },
     filesystem = {

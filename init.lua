@@ -145,7 +145,7 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
 -- Keep cursor as non-blinking block in normal mode, line in insert mode
-vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:block'
+vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:block,r-cr-o:block'
 
 -- Configure how new splits should be opened
 vim.o.splitright = true
@@ -196,6 +196,25 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>td', function()
+  local current = vim.diagnostic.config().virtual_text
+  if current then
+    vim.diagnostic.config { virtual_text = false }
+    vim.notify('Diagnostic virtual text disabled', vim.log.levels.INFO)
+  else
+    vim.diagnostic.config {
+      virtual_text = {
+        source = 'if_many',
+        spacing = 2,
+        wrap = true,
+        format = function(diagnostic)
+          return diagnostic.message
+        end,
+      },
+    }
+    vim.notify('Diagnostic virtual text enabled', vim.log.levels.INFO)
+  end
+end, { desc = '[T]oggle [D]iagnostic virtual text' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -687,6 +706,7 @@ require('lazy').setup({
         virtual_text = {
           source = 'if_many',
           spacing = 2,
+          wrap = true,
           format = function(diagnostic)
             local diagnostic_message = {
               [vim.diagnostic.severity.ERROR] = diagnostic.message,
@@ -1030,8 +1050,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.autopairs',
+  -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
