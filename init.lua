@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.o.relativenumber = true
+-- vim.o.relativenumber = true
 -- Hard wrap
 vim.opt.textwidth = 100
 vim.opt.formatoptions:append 't'
@@ -196,22 +196,29 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- Store the default virtual text config to reuse
+local default_virtual_text = {
+  source = 'if_many',
+  spacing = 2,
+  wrap = true,
+  format = function(diagnostic)
+    local diagnostic_message = {
+      [vim.diagnostic.severity.ERROR] = diagnostic.message,
+      [vim.diagnostic.severity.WARN] = diagnostic.message,
+      [vim.diagnostic.severity.INFO] = diagnostic.message,
+      [vim.diagnostic.severity.HINT] = diagnostic.message,
+    }
+    return diagnostic_message[diagnostic.severity]
+  end,
+}
+
 vim.keymap.set('n', '<leader>td', function()
   local current = vim.diagnostic.config().virtual_text
   if current then
     vim.diagnostic.config { virtual_text = false }
     vim.notify('Diagnostic virtual text disabled', vim.log.levels.INFO)
   else
-    vim.diagnostic.config {
-      virtual_text = {
-        source = 'if_many',
-        spacing = 2,
-        wrap = true,
-        format = function(diagnostic)
-          return diagnostic.message
-        end,
-      },
-    }
+    vim.diagnostic.config { virtual_text = default_virtual_text }
     vim.notify('Diagnostic virtual text enabled', vim.log.levels.INFO)
   end
 end, { desc = '[T]oggle [D]iagnostic virtual text' })
@@ -703,20 +710,7 @@ require('lazy').setup({
             [vim.diagnostic.severity.HINT] = '󰌶 ',
           },
         } or {},
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          wrap = true,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
+        virtual_text = default_virtual_text,
       }
 
       -- LSP servers and clients are able to communicate to each other what features they support.
@@ -737,7 +731,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -833,11 +827,11 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        typescript = { 'prettierd', 'prettier', stop_after_first = true },
-        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
       },
     },
   },
@@ -874,7 +868,6 @@ require('lazy').setup({
         opts = {},
       },
       'folke/lazydev.nvim',
-      -- 'Kaiser-Yang/blink-cmp-avante',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -920,14 +913,8 @@ require('lazy').setup({
       },
 
       sources = {
-        -- add avante if using
         default = { 'lsp', 'path', 'snippets', 'lazydev' },
         providers = {
-          -- avante = {
-          --   module = 'blink-cmp-avante',
-          --   name = 'Avante',
-          --   opts = {}, -- extra knobs defined in README of blink-cmp-avante
-          -- },
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
         },
       },
@@ -948,29 +935,29 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'catppuccin/nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      -- require('tokyonight').setup {
-      --   styles = {
-      --     comments = { italic = false }, -- Disable italics in comments
-      --   },
-      -- }
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      require('catppuccin').setup {
-        flavour = 'frappe',
-      }
-      vim.cmd.colorscheme 'catppuccin'
-    end,
-  },
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'catppuccin/nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   config = function()
+  --     ---@diagnostic disable-next-line: missing-fields
+  --     -- require('tokyonight').setup {
+  --     --   styles = {
+  --     --     comments = { italic = false }, -- Disable italics in comments
+  --     --   },
+  --     -- }
+  --     -- Load the colorscheme here.
+  --     -- Like many other themes, this one has different styles, and you could load
+  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --     require('catppuccin').setup {
+  --       flavour = 'frappe',
+  --     }
+  --     vim.cmd.colorscheme 'catppuccin'
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
@@ -1018,7 +1005,22 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'css',
+        'javascript',
+        'typescript',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
