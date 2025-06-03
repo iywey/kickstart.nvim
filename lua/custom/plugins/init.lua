@@ -61,19 +61,19 @@ return {
   {
     'tpope/vim-fugitive',
   },
-  --   {
-  --     'echasnovski/mini.bufremove',
-  --     version = false,
-  --
-  --     vim.api.nvim_create_user_command('BD', function(opts)
-  --       local force = opts.bang or false
-  --       require('mini.bufremove').delete(0, force)
-  --     end, {
-  --       bang = true,
-  --       desc = 'Buffer delete via mini.bufremove (preserve windows)',
-  --     }),
-  --     vim.cmd [[
-  --   cabbrev bd BD
-  -- ]],
-  --   },
+  {
+    'echasnovski/mini.bufremove',
+    version = false,
+
+    vim.api.nvim_create_user_command('BD', function(opts)
+      local force = opts.bang or false
+      require('mini.bufremove').delete(0, force)
+    end, {
+      bang = true,
+      desc = 'Buffer delete via mini.bufremove (preserve windows)',
+    }),
+    vim.cmd [[
+    cabbrev bd BD
+  ]],
+  },
 }
