@@ -186,19 +186,6 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Enable soft wrapping at 80 characters for markdown and files with no filetype
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'markdown', '' },
-  callback = function()
-    local opt = vim.opt_local
-    opt.wrap = true
-    opt.linebreak = true
-    opt.breakindent = true
-    opt.textwidth = 80
-  end,
-  desc = 'Enable soft wrapping at 80 characters for markdown and no filetype',
-})
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
