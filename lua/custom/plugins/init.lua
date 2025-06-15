@@ -61,6 +61,12 @@ return {
       window = {
         width = 80,
       },
+      plugins = {
+        options = {
+          laststatus = 3, -- Show statusline in zen mode
+          showcmd = true, -- Show partial commands
+        },
+      },
     },
   },
   {
