@@ -199,7 +199,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 local default_virtual_text = {
   source = 'if_many',
   spacing = 2,
-  wrap = true,
   format = function(diagnostic)
     local diagnostic_message = {
       [vim.diagnostic.severity.ERROR] = diagnostic.message,

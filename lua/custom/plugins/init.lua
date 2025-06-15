@@ -48,16 +48,21 @@ return {
   --     vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
   --   end,
   -- },
-  -- {
-  --   'folke/zen-mode.nvim',
-  --   keys = {
-  --     {
-  --       '<leader>z',
-  --       '<cmd>ZenMode<CR>',
-  --       desc = 'Toggle Zen Mode',
-  --     },
-  --   },
-  -- },
+  {
+    'folke/zen-mode.nvim',
+    keys = {
+      {
+        '<leader>z',
+        '<cmd>ZenMode<CR>',
+        desc = 'Toggle Zen Mode',
+      },
+    },
+    opts = {
+      window = {
+        width = 80,
+      },
+    },
+  },
   {
     'tpope/vim-fugitive',
   },
