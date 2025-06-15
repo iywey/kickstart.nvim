@@ -103,13 +103,6 @@ vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 vim.o.relativenumber = true
--- Hard wrap
-vim.opt.textwidth = 100
-vim.opt.formatoptions:append 't'
-vim.opt.linebreak = true
--- Soft wrap
-vim.opt.wrap = true
-vim.opt.breakindent = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -169,22 +162,41 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.o.scrolloff = 10
+vim.o.scrolloff = 5
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
--- Set default indentation to 2 spaces for specific file types
+-- Global default
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+
+-- Override for filetypes that prefer 2 spaces
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'lua', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
   callback = function()
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.tabstop = 2
-    vim.opt_local.softtabstop = 2
-    vim.opt_local.expandtab = true
+    local opt = vim.opt_local
+    opt.shiftwidth = 2
+    opt.tabstop = 2
+    opt.softtabstop = 2
   end,
+})
+
+-- Enable soft wrapping at 80 characters for markdown and files with no filetype
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown', '' },
+  callback = function()
+    local opt = vim.opt_local
+    opt.wrap = true
+    opt.linebreak = true
+    opt.breakindent = true
+    opt.textwidth = 80
+  end,
+  desc = 'Enable soft wrapping at 80 characters for markdown and no filetype',
 })
 
 -- [[ Basic Keymaps ]]
@@ -712,6 +724,15 @@ require('lazy').setup({
         } or {},
         virtual_text = default_virtual_text,
       }
+
+      -- Disable diagnostics for markdown files
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'markdown',
+        callback = function(args)
+          vim.diagnostic.enable(false, { bufnr = args.buf })
+        end,
+        desc = 'Disable diagnostics for markdown files',
+      })
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
