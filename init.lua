@@ -278,18 +278,6 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHo
   end,
 })
 
--- Enable wrap in diff mode
-vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, {
-  desc = 'Enable line wrapping in diff mode',
-  callback = function()
-    if vim.wo.diff then
-      vim.wo.wrap = true
-      vim.wo.linebreak = true
-      vim.wo.breakindent = true
-    end
-  end,
-})
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
