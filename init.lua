@@ -192,6 +192,9 @@ vim.api.nvim_create_autocmd('FileType', {
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- Remove Neovim's native snippet Tab mapping (we use LuaSnip via blink.cmp)
+vim.keymap.del('i', '<Tab>')
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -862,7 +865,10 @@ require('lazy').setup({
           --   end,
           -- },
         },
-        opts = {},
+        opts = {
+          -- Clear snippet session when leaving insert mode or cursor leaves snippet region
+          delete_check_events = 'TextChanged,InsertLeave',
+        },
       },
       'folke/lazydev.nvim',
     },
