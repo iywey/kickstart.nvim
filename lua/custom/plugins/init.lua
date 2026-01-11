@@ -1,4 +1,8 @@
 return {
+  {
+    'nathangrigg/vim-beancount',
+    ft = 'beancount',
+  },
   -- {
   --   'ThePrimeagen/harpoon',
   --   branch = 'harpoon2',
