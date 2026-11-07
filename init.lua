@@ -55,7 +55,7 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
 -- Keep cursor as non-blinking block in normal mode, line in insert mode
-vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:block,r-cr-o:block'
+vim.o.guicursor = 'n-v-c-sm:block-blinkon0-blinkoff0-blinkwait0,i-ci-ve:block-blinkon0-blinkoff0-blinkwait0,r-cr-o:block-blinkon0-blinkoff0-blinkwait0'
 
 -- Configure how new splits should be opened
 vim.o.splitright = true
@@ -94,7 +94,7 @@ vim.opt.expandtab = true
 
 -- Override for filetypes that prefer 2 spaces
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'lua', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+  pattern = { 'lua', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'html', 'css', 'scss', 'json', 'jsonc', 'markdown', 'yaml' },
   callback = function()
     local opt = vim.opt_local
     opt.shiftwidth = 2
@@ -644,7 +644,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         pyright = {},
         -- rust_analyzer = {},
@@ -655,6 +655,7 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
+        tailwindcss = {},
         --
 
         lua_ls = {
@@ -744,8 +745,14 @@ require('lazy').setup({
         -- Conform can also run multiple formatters sequentially
         python = { 'ruff_organize_imports', 'ruff_format' },
         -- You can use 'stop_after_first' to run the first available formatter from the list
+        javascript = { 'prettier' },
+        javascriptreact = { 'prettier' },
         typescript = { 'prettier' },
         typescriptreact = { 'prettier' },
+        css = { 'prettier' },
+        html = { 'prettier' },
+        json = { 'prettier' },
+        markdown = { 'prettier' },
       },
     },
   },
@@ -937,6 +944,8 @@ require('lazy').setup({
         'css',
         'javascript',
         'typescript',
+        'tsx',
+        'json',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -947,7 +956,7 @@ require('lazy').setup({
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true, disable = { 'ruby', 'c', 'cpp', 'html' } },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
